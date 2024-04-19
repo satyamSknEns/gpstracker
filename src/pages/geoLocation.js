@@ -29,7 +29,7 @@ const GeoLocation = () => {
 
   const handleStartPoint = () => {
     if (navigator.geolocation) {
-      navigator.geolocation.watchPosition(
+      navigator.geolocation.getCurrentPosition(
         (position) => {
           setCoordinates(position.coords);
           const { latitude, longitude } = position.coords;
