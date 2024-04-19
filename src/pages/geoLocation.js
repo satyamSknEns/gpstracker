@@ -1,11 +1,19 @@
-import React, { useState } from "react";
+import React, { useState,useEffect } from "react";
 import axios from "axios";
 // import MapContainer from "../components/mapContainer";
-import MapComponent from "../components/mapContent";
+// import MapComponent from "../components/mapContent";
 const GeoLocation = () => {
   const [address, setAddress] = useState([]);
   const [coordinates, setCoordinates] = useState([]);
   const [location, setLocation] = useState(null);
+  const [allCoords, setAllCoords] = useState([]);
+
+  useEffect(() => {
+    const storedCoords = JSON.parse(window.localStorage.getItem("coordinates"));
+    if (storedCoords) {
+      setAllCoords(storedCoords);
+    }
+  }, []);
 
   const getLocation = () => {
     if (navigator.geolocation) {
@@ -13,8 +21,11 @@ const GeoLocation = () => {
         (position) => {
           setLocation({
             latitude: position.coords.latitude,
-            longitude: position.coords.longitude
+            longitude: position.coords.longitude,
           });
+          const newCoords = [position.coords.longitude, position.coords.latitude];
+          setAllCoords(prevCoords => [...prevCoords, newCoords]);
+          window.localStorage.setItem("coordinates", JSON.stringify([...allCoords, newCoords]));
         },
         (error) => {
           console.error("Error getting the location:", error);
@@ -25,9 +36,12 @@ const GeoLocation = () => {
     }
   };
 
-  console.log('location',location);
+  console.log("location", location);
+  // console.log('allCoords',allCoords);
 
   const handleStartPoint = () => {
+    let allData = JSON.parse(window.localStorage.getItem("coordinates"));
+    console.log("allData", allData);
     if (navigator.geolocation) {
       navigator.geolocation.getCurrentPosition(
         (position) => {
@@ -70,16 +84,16 @@ const GeoLocation = () => {
   console.log("coordinates", coordinates);
   return (
     <section className="flex flex-col items-center justify-center min-h-screen">
-    <div>
-      <button onClick={getLocation}>Get Location</button>
-      {location && (
-        <div>
-          <h2>Your Location Details:</h2>
-          <p>Latitude: {location.latitude}</p>
-          <p>Longitude: {location.longitude}</p>
-        </div>
-      )}
-    </div>
+      <div>
+        <button onClick={getLocation}>Get Location</button>
+        {location ? (
+          <div>
+            <h2>Your Location Details:</h2>
+            <p>Latitude: {location.latitude}</p>
+            <p>Longitude: {location.longitude}</p>
+          </div>
+        ) : null}
+      </div>
       <div className="flex flex-col items-center justify-center">
         <div className="flex">
           <button
@@ -109,7 +123,15 @@ const GeoLocation = () => {
           </>
         )}
       </div>
-      <MapComponent />
+      <div>
+        <h2>All Coordinates:</h2>
+        <ul>
+          {allCoords.map((coord, index) => (
+            <li key={index}>{`Latitude: ${coord[1]}, Longitude: ${coord[0]}`}</li>
+          ))}
+        </ul>
+      </div>
+      {/* <MapComponent /> */}
       {/* <MapContainer /> */}
     </section>
   );
