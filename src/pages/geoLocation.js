@@ -18,7 +18,6 @@ const GeoLocation = () => {
         },
         (error) => {
           console.error("Error getting the location:", error);
-          alert(error.message);
         }
       );
     } else {
