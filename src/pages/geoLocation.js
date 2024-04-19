@@ -15,7 +15,7 @@ const GeoLocation = () => {
     }
   }, []);
 
-  const getLocation = () => {
+  const handleStart = () => {
     if (navigator.geolocation) {
       navigator.geolocation.watchPosition(
         (position) => {
@@ -33,6 +33,11 @@ const GeoLocation = () => {
       );
     } else {
       console.error("Geolocation is not supported by this browser.");
+    }
+  };
+  const handleStop = () => {
+    if (navigator.geolocation) {
+      navigator.geolocation.clearWatch(handleStart);
     }
   };
 
@@ -57,11 +62,11 @@ const GeoLocation = () => {
       );
     }
   };
-  const handleStopPoint = () => {
-    if (navigator.geolocation) {
-      navigator.geolocation.clearWatch(handleStartPoint);
-    }
-  };
+  // const handleStopPoint = () => {
+  //   if (navigator.geolocation) {
+  //     navigator.geolocation.clearWatch(handleStartPoint);
+  //   }
+  // };
 
   let apiEndpoint = `https://api.opencagedata.com/geocode/v1/json`;
   let apiKey = `5fbb4d8974974b549e012b3cdb059919`;
@@ -85,7 +90,20 @@ const GeoLocation = () => {
   return (
     <section className="flex flex-col items-center justify-center min-h-screen">
       <div>
-        <button onClick={getLocation}>Get Location</button>
+        <div className="flex">
+        <button
+            className="text-xl font-medium p-2 px-4 m-2 bg-blue-600 rounded text-white"
+            onClick={handleStart}
+          >
+            Start
+          </button>
+          <button
+            className="text-xl font-medium p-2 px-4 m-2 bg-blue-600 rounded text-white"
+            onClick={handleStop}
+          >
+            Stop
+          </button>
+        </div>
         {location ? (
           <div>
             <h2>Your Location Details:</h2>
@@ -100,13 +118,7 @@ const GeoLocation = () => {
             className="text-xl font-medium p-2 px-4 m-2 bg-blue-600 rounded text-white"
             onClick={handleStartPoint}
           >
-            Start
-          </button>
-          <button
-            className="text-xl font-medium p-2 px-4 m-2 bg-blue-600 rounded text-white"
-            onClick={handleStopPoint}
-          >
-            Stop
+            Get Location
           </button>
         </div>
         {coordinates.latitude && (
