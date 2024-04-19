@@ -3,6 +3,8 @@ import mapboxgl from "mapbox-gl";
 
 const MapComponent = () => {
   useEffect(() => {
+    let allData = JSON.parse(window.localStorage.getItem("coordinates"));
+    console.log("allData", allData);
     mapboxgl.accessToken =
       "pk.eyJ1IjoiZW5zZW50ZXJwcmlzZXMiLCJhIjoiY2x2MjQ5NWprMGFqNjJscDhzeGZkcm5yayJ9.WloQmfc86sJgpQOQ8W9RHg";
     const map = new mapboxgl.Map({
@@ -13,7 +15,6 @@ const MapComponent = () => {
       center: [-122.486052, 37.830348],
       zoom: 15,
     });
-
     map.on("load", () => {
       map.addSource("route", {
         type: "geojson",
