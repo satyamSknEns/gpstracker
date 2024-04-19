@@ -1,7 +1,7 @@
 import React, { useState,useEffect } from "react";
 import axios from "axios";
 // import MapContainer from "../components/mapContainer";
-// import MapComponent from "../components/mapContent";
+import MapComponent from "../components/mapContent";
 const GeoLocation = () => {
   const [address, setAddress] = useState([]);
   const [coordinates, setCoordinates] = useState([]);
@@ -25,6 +25,7 @@ const GeoLocation = () => {
           });
           const newCoords = [position.coords.longitude, position.coords.latitude];
           setAllCoords(prevCoords => [...prevCoords, newCoords]);
+
           window.localStorage.setItem("coordinates", JSON.stringify([...allCoords, newCoords]));
         },
         (error) => {
@@ -143,7 +144,7 @@ const GeoLocation = () => {
           ))}
         </ul>
       </div>
-      {/* <MapComponent /> */}
+      <MapComponent />
       {/* <MapContainer /> */}
     </section>
   );
