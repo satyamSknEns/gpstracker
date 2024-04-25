@@ -25,7 +25,7 @@ const MapComponent = () => {
         //   projection:"globe",
         //   projection:"naturalEarth",
         center: centeredElement,
-        zoom: 15,
+        zoom: 13,
       });
       map.on("load", () => {
         map.addSource("route", {
@@ -60,7 +60,7 @@ const MapComponent = () => {
   }, []);
 
   return (
-    <div id="map" className="map-container min-w-[85%] min-h-[450px] mx-auto" />
+    <div id="map" className="map-container min-w-[85%] sm:h-[450px] h-auto mx-auto" />
   );
 };
 
