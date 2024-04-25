@@ -60,7 +60,7 @@ const MapComponent = () => {
   }, []);
 
   return (
-    <div id="map" className="map-container min-w-[98%] min-h-[450px] mx-auto" />
+    <div id="map" className="map-container min-w-[85%] min-h-[450px] mx-auto" />
   );
 };
 
